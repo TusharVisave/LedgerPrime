@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: expense-tracker
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:expensetracker}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USER:}
+    password: ${SMTP_PASS:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-this-to-a-long-random-secret-at-least-64-chars-long-for-hs512!!}
+    access-expiration-minutes: 15
+    refresh-expiration-days: 7
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+  mail:
+    enabled: ${MAIL_ENABLED:false}
+    from: ${MAIL_FROM:no-reply@expensetracker.local}
+  security:
+    cookie-secure: ${COOKIE_SECURE:false}
+    cookie-same-site: ${COOKIE_SAME_SITE:Lax}
+  auth:
+    rate-limit-per-minute: ${AUTH_RATE_LIMIT_PER_MINUTE:60}
+  ai:
+    # Optional OpenAI-compatible chat API for the monthly AI report (BYOK).
+    # Leave the key empty to disable (endpoint returns 501).
+    base-url: ${AI_BASE_URL:https://integrate.api.nvidia.com/v1}
+    model: ${AI_MODEL:}
+    api-key: ${AI_API_KEY:}
+    timeout-ms: ${AI_TIMEOUT_MS:20000}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    com.expensetracker: INFO
+    org.hibernate.SQL: WARN

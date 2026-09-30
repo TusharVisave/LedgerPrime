@@ -1,0 +1,1 @@
+ALTER TABLE reminders ADD COLUMN last_notified_at TIMESTAMP WITH TIME ZONE;
